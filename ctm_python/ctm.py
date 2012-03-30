@@ -149,27 +149,34 @@ class CTM:
 		seed = 1115574245
 		sum = 0
 		log_beta = np.zeros([self._K,self._W])
-		for i in xrange(self._K):
-			for n in xrange(self._W):
-				log_beta[i,n] = wordcts[i,n] + 1.0 +np.random.randint(seed) 
-				# to initialize and smooth
+
+		# little function to perform element summation
+		def element_add_1(x):
+			return x + 1.0 + np.random.randint(seed)
+		log_beta = map(element_add_1, wordcts)
+		# for i in xrange(self._K):
+		# 	for n in xrange(self._W):
+		# 		log_beta[i,n] = wordcts[i,n] + 1.0 +np.random.randint(seed) 
+		# to initialize and smooth
 		sum = np.log(np.sum(log_beta))
-		# construct a small function inc in order to use map function
-		# to normalize log_beta
-		def inc(x):
+		
+		# little function to normalize log_beta
+		def element_add_2(x):
 			return x + np.log(x-sum)
-		log_beta = map(inc,log_beta)
+		log_beta = map(element_add_2,log_beta)
 
-	# before the actual variational inference 
-	# below are some funtions to deal with the variational
-	# parameters to be used in variational inference, namely 
-	# add '_v' to indicate variational parameter
-	# * zeta_v
-	# * phi_v
-	# * lambda, we call it lambda_v in order to distinguish 
-	#     it from python's own function name. 
-	# * nu_v 
-
+	'''
+	before the actual variational inference 
+	below are some funtions to deal with the variational
+	parameters to be used in variational inference, namely 
+	add '_v' to indicate variational parameter
+	* zeta_v
+	* phi_v
+	* lambda, we call it lambda_v in order to distinguish 
+	    it from python's own function name. 
+	* nu_v 
+	'''
+	
 	# the next function correspond to eq.7 in ctm paper, which 
 	# is the upper bound
 	def expect_mult_norm(self, lambda_v, nu_v, zeta_v):
