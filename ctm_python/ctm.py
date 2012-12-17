@@ -9,7 +9,7 @@ import random   	# to generate random number
 import cPickle	# to write in files
 import math 		# just math stuff
 import logging	# having decided to use this or not
-import itertools	# do iteration work, obviously
+import itertools	# do iteration work, obviously......
 
 import numpy as np 	# standard numpy 
 from scipy.special import gammaln, digamma, psi 	# gamma function utils
